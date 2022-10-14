@@ -3,9 +3,9 @@
     public class YoloRegion
     {
         public string Class { get; set; }
-        public double XCenter { get; set; }
-        public double YCenter { get; set; }
-        public double BoxWidth { get; set; }
-        public double BoxHeight { get; set; }
+        public float XCenter { get; set; }
+        public float YCenter { get; set; }
+        public float BoxWidth { get; set; }
+        public float BoxHeight { get; set; }
     }
 }

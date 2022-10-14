@@ -5,15 +5,15 @@ namespace VottJsonToYolo.Models
     public class YoloBoundingBox
     {
         [JsonProperty("height")]
-        public double Height { get; set; }
+        public float Height { get; set; }
 
         [JsonProperty("width")]
-        public double Width { get; set; }
+        public float Width { get; set; }
 
         [JsonProperty("left")]
-        public double YCenter { get; set; }
+        public float YCenter { get; set; }
 
         [JsonProperty("top")]
-        public double XCenter { get; set; }
+        public float XCenter { get; set; }
     }
 }

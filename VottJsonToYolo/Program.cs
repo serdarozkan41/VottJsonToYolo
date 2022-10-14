@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using VottJsonToYolo.Models;
@@ -12,6 +13,23 @@ namespace VottJsonToYolo
     {
         static List<VottLabel> VottLabels = new List<VottLabel>();
         static List<YoloLabel> YoloLabels = new List<YoloLabel>();
+        static List<string> tags = new List<string>()
+        {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "0",
+            "?",
+            "=",
+            "+"
+        };
+
         static void Main(string[] args)
         {
             #region INIT
@@ -62,10 +80,11 @@ namespace VottJsonToYolo
             {
                 var extension = Path.GetExtension(yoloLabel.FileName);
                 var lines = new List<string>();
-
+                CultureInfo cultureInfo = new CultureInfo("ev-US");
                 foreach (var yoloRegion in yoloLabel.YoloRegions)
                 {
-                    lines.Add($"{yoloRegion.Class} {yoloRegion.XCenter} {yoloRegion.YCenter} {yoloRegion.BoxWidth} {yoloRegion.BoxHeight}");
+
+                    lines.Add(String.Format($"{tags.IndexOf(yoloRegion.Class) + 1} {yoloRegion.XCenter.ToString(cultureInfo)} {yoloRegion.YCenter.ToString(cultureInfo)} {yoloRegion.BoxWidth.ToString(cultureInfo)} {yoloRegion.BoxHeight.ToString(cultureInfo)}"));
                 }
 
                 if (index < testCount)//test
@@ -122,6 +141,7 @@ namespace VottJsonToYolo
                 foreach (var region in regions)
                 {
                     var label = region.Tags.First();
+
                     var yoloBox = ConvertYoloBox(region.BoundingBox, origWidth, origHeight);
                     var yoloRegion = new YoloRegion()
                     {
@@ -146,11 +166,11 @@ namespace VottJsonToYolo
         {
             var box = new YoloBoundingBox();
 
-            box.XCenter = (vottBoundingBox.Left + (0.5 * vottBoundingBox.Width)) / widht;
-            box.YCenter = (vottBoundingBox.Top + (0.5 * vottBoundingBox.Height)) / height;
+            box.XCenter = (float)(vottBoundingBox.Left + (0.5 * vottBoundingBox.Width)) / widht;
+            box.YCenter = (float)(vottBoundingBox.Top + (0.5 * vottBoundingBox.Height)) / height;
 
-            box.Width = vottBoundingBox.Width;
-            box.Height = vottBoundingBox.Height;
+            box.Width = vottBoundingBox.Width / widht;
+            box.Height = vottBoundingBox.Height / height;
 
             return box;
         }
